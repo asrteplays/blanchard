@@ -622,13 +622,18 @@ body {
   position: relative;
 }
 
+.tooltip:focus {
+  outline: none;
+}
+
 .marker {
   display: inline-block;
   width: 16px;
   height: 16px;
   border-radius: 100%;
 
-  background-color: #9D5CD0;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px #9D5CD0;
   cursor: pointer;
 
   position: relative;
@@ -668,12 +673,32 @@ body {
   opacity: 1;
 }
 
+.tooltip:focus .marker,
+.marker:hover,
+.marker:focus,
+.marker:active {
+  background-color: #9D5CD0;
+}
+
+.tooltip:focus .marker::before,
+.tooltip:focus .marker::after,
+.marker:hover::before,
+.marker:focus::before,
+.marker:active::before,
+.marker:hover::after,
+.marker:focus::after,
+.marker:active::after {
+  background-color: #fff;
+}
+
 .marker::before {
   content: '';
   width: 2px;
   height: 8px;
 
-  background-color: #fff;
+  background-color: #9D5CD0;
+
+  transition: background-color .3s ease-in-out;
 
   position: absolute;
   left: 50%;
@@ -687,7 +712,9 @@ body {
   height: 2px;
   border-radius: 50%;
 
-  background-color: #fff;
+  background-color: #9D5CD0;
+
+  transition: background-color .3s ease-in-out;
 
   position: absolute;
   top: 15%;
@@ -805,6 +832,10 @@ body {
   fill: none;
 }
 
+.social {
+  display: flex;
+}
+
 .social-icon {
   width: 46px;
   height: 46px;
@@ -819,7 +850,8 @@ body {
 }
 
 .social__item:not(:last-child) {
-  margin-right: 13px;
+  /* margin-right: 13px; */
+  margin-right: 18px;
 }
 
 
@@ -929,10 +961,19 @@ body {
 
 .swiper-item__desc-caption {
   margin-right: auto;
+  max-width: 250px;
 }
 
 .swiper-item__desc-name {
   font-weight: 700;
+}
+
+.swiper-item__desc-name,
+.swiper-item__desc-author {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .swiper-item__desc-price {
@@ -1399,7 +1440,8 @@ body {
 
 .swiper-container-editions {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
+  height: auto;
   margin-left: 0;
   margin-right: 0;
   overflow: hidden;
@@ -1407,13 +1449,20 @@ body {
 
 .swiper-container-partners {
   width: 100%;
-  
+
   overflow: hidden;
 }
 
 .swiper-slide-partners {
   height: auto;
   max-height: 150px;
+  border: 1px solid #CACACA;
+
+  transition: border-color .2s ease-in-out;
+}
+
+.swiper-slide-partners:focus {
+  outline: none;
 }
 
 .swiper-pagination-bullet {
@@ -1434,8 +1483,9 @@ body {
   display: inline-block;
   width: 30px;
   height: 30px;
+  flex-shrink: 0;
   border-radius: 50%;
-
+  
   background-color: #666666;
   cursor: pointer;
 
@@ -1523,6 +1573,10 @@ body {
   padding-top: 32px;
 }
 
+/* just-validate */
+.js-validate-error-label {
+  position: absolute;
+}
 
 /*HEADER*/
 .header {
@@ -1675,7 +1729,6 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
 
   transition: outline .2s ease-in-out;
 
@@ -2181,12 +2234,26 @@ body {
   background: rgba(157, 92, 208, .5);
 }
 
+.editions-price__group-input:focus-visible {
+  outline: none;
+}
+
 .editions-price__title {
   margin-bottom: 5px;
 }
 
 .editions__swiper {
   padding-top: 13px;
+}
+
+.swiper-slide--editions {
+  border: 2px solid transparent;
+}
+
+.swiper-slide--editions:focus {
+  border-color: #885BC7;
+
+  outline: none;
 }
 
 
@@ -2218,9 +2285,6 @@ body {
   height: 100%;
   width: 100%;
   padding: 44px 60px 43px 60px;
-  border: 1px solid #CACACA;
-
-  transition: border-color .2s ease-in-out;
 }
 
 .partners-inner__item-img {
@@ -2236,11 +2300,14 @@ body {
   transition: filter .2s ease-in-out, opacity .2s ease-in-out;
 }
 
-.partners-inner__item:hover {
+.swiper-slide-partners:focus,
+.swiper-slide-partners:active,
+.swiper-slide-partners:hover {
   border-color: #885BC7;
 }
 
-.partners-inner__item:hover .partners-inner__item-img {
+.swiper-slide-partners:active .partners-inner__item-img,
+.swiper-slide-partners:hover .partners-inner__item-img {
   filter: grayscale(0%);
   opacity: 1;
 }
@@ -2254,6 +2321,7 @@ body {
 
 .contacts {
   display: flex;
+  margin: 0 -160px;
 }
 
 .contacts__left {
@@ -2564,6 +2632,10 @@ body {
     margin-bottom: 7px;
   }
 
+  .swiper-item__desc-caption {
+    max-width: 150px;
+  }
+
   .editions-price__title {
     margin-bottom: 7px;
   }
@@ -2606,6 +2678,10 @@ body {
   }
 
   /* Contacts */
+  .contacts {
+    margin: 0 -50px;
+  }
+
   .contacts__left {
     width: 48%;
     padding: 122px 100px 98px 50px;
@@ -2906,6 +2982,11 @@ body {
 
   .catalog-description {
     display: none;
+  }
+
+  /* contacts */
+  .contacts {
+    margin: 0 -15px;
   }
 
   /* Footer */
@@ -3326,6 +3407,10 @@ body {
     display: block;
   }
 
+  .swiper-item__desc-caption {
+    max-width: 130px;
+  }
+
   .swiper-container-editions {
     width: 100%;
     margin-left: 0;
@@ -3364,6 +3449,10 @@ body {
   }
 
   /* Projects */
+  .popup {
+    max-width: 100px;
+  }
+
   .swiper-button-partners--prev {
     margin-right: 17px;
   }
@@ -3473,3 +3562,8 @@ body {
     margin-right: 25px;
   }
 }
+
+/* 
+- пиксель перфект - на десктопе верстка отличается от верстки на ноутбуке
+- изображения в галерии - div для клика переделать в button
+*/

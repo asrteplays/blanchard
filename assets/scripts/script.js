@@ -51,15 +51,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   document.querySelectorAll('.header-subinner__link').forEach(el => {
     el.addEventListener('click', function() {
-      this.classList.toggle('open')
+      toggleDropDown(this)
     })
   })
 
-  // let clickElements = document.getElementsByClassName('clickable'),
-  //     forEach = Array.prototype.forEach;
-  // forEach.call(clickElements, function(c) {
-  //   c.addEventListener('click', addElement);
-  // });
+  function toggleDropDown (subinnerLink) {
+    document.querySelectorAll('.header-subinner__link').forEach(function(el) {
+      if(el !== subinnerLink) {
+        el.classList.remove('open');
+      }
+    });
+
+    subinnerLink.classList.toggle('open');
+  };
+
+  document.addEventListener('click', function(e) {
+    dropDownActive = document.querySelector('.header-subinner__link.open');
+    if (dropDownActive !== null) {
+      const target = e.target;
+      const itsDropDownActive = target == dropDownActive;
+      const itsDropDown = target.classList.contains('drop-down') || target.closest('.drop-down') !== null;
+      if (itsDropDown == false && !itsDropDownActive && !target.classList.contains('open')) {
+        toggleDropDown(dropDownActive)
+      }
+    }
+  });
+
   document.querySelectorAll('.clickable').forEach(el => {
     el.addEventListener('click', addElement)
   })
@@ -105,28 +122,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.querySelectorAll('.accordion-content__list-button').forEach(function(tabsBtn){
     tabsBtn.addEventListener('click', function(event){
       const path = event.currentTarget.dataset.path;
-      // const pathCentury = event.currentTarget.dataset.pathCentury;
-      // const pathCountry = event.currentTarget.dataset.pathCountry;
       const pathCentury = event.currentTarget.closest(".accordion__content").dataset.artistsCentury;
       const pathCountry = event.currentTarget.closest(".accordion-content__list").dataset.artistsCountry;
-
-      // document.querySelectorAll('.catalog-content__description').forEach(function(tabsContent){
-      //   tabsContent.classList.remove('catalog-content__description-active')
-      // })
-
-      // document.querySelector(`[data-target="${path}"][data-target-country="${pathCountry}"][data-target-century="${pathCentury}"]`).classList.add('catalog-content__description-active')
 
       changeArtist(path,pathCountry,pathCentury);
     })
   })
 
   // changeArtist
-  function changeArtist(path,pathCountry,pathCentury) {
-    document.querySelectorAll('.catalog-content__description').forEach(function(tabsContent){
-      tabsContent.classList.remove('catalog-content__description-active')
-    })
-
-    document.querySelector(`[data-target="${path}"][data-target-country="${pathCountry}"][data-target-century="${pathCentury}"]`).classList.add('catalog-content__description-active')
+  function changeArtist(path,pathCountry,pathCentury) {  
+    target = document.querySelector(`[data-target="${path}"][data-target-country="${pathCountry}"][data-target-century="${pathCentury}"]`);
+    if(target !== null) {
+      document.querySelectorAll('.catalog-content__description').forEach(function(tabsContent){
+        tabsContent.classList.remove('catalog-content__description-active')
+      });
+      target.classList.add('catalog-content__description-active');
+    }
   }
 
   // Tabs-lang
@@ -141,7 +152,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       document.querySelectorAll(`[data-artists-country="${lang}"]`).forEach(function(el){
         el.classList.add('active');
       });
-      // document.querySelector(`[data-artists="${lang}"]`).classList.add('active');
       changeArtist('one',lang,'15');
     })
   })
@@ -170,6 +180,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   // SWIPER
   var swiper = new Swiper('.swiper-container-gallery', {
+    a11y: {
+      prevSlideMessage: 'Предыдущий слайд',
+      nextSlideMessage: 'Следующий слайд',
+    },
     slidesPerView: 1,
     spaceBetween: 30,
     pagination: {
@@ -181,12 +195,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       prevEl: '.swiper-button-gallery--prev',
     },
     breakpoints: {
-      // 321: {
-      //   slidesPerView: 2,
-      //   slidesPerGroup: 2,
-      //   slidesPerColumn: 1,
-      //   spaceBetween: 34,
-      // },
       594: {
         slidesPerView: 2,
         slidesPerGroup: 2,
@@ -221,6 +229,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function swiperEditionsInit() {
     if(mediaQuery.matches) {
       swiperEditions = new Swiper(swiperContainerEditions, {
+        a11y: {
+          prevSlideMessage: 'Предыдущий слайд',
+          nextSlideMessage: 'Следующий слайд',
+          slideLabelMessage: 'Слайд',
+        },
         slidesPerView: 1,
         spaceBetween: 30,
         navigation: {
@@ -254,6 +267,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
   var swiperPartners = new Swiper('.swiper-container-partners', {
+    a11y: {
+      prevSlideMessage: 'Предыдущий слайд',
+      nextSlideMessage: 'Следующий слайд',
+      slideLabelMessage: 'Слайд',
+    },
     slidesPerView: 1,
     spaceBetween: 21,
     navigation: {
@@ -287,26 +305,48 @@ document.addEventListener("DOMContentLoaded", (event) => {
   ymaps.ready(init);
   
   function init(){
-    var zoomControl = new ymaps.control.ZoomControl({
-      options: {
+
+    if (!mediaQuery.matches) {
+      var zoomControl = new ymaps.control.ZoomControl({
+        options: {
+          position: {
+            top: '70px',
+            right: '15px'
+          },
+          size: 'small'
+        }
+      }),
+  
+      geoLocation = new ymaps.control.GeolocationControl({
+        options: {
+          position: {
+            top: '150px',
+            right: '15px'
+          }
+        }
+      })
+    } else {
+      var zoomControl = new ymaps.control.ZoomControl({
+        options: {
           position: {
             top: '270px',
             right: '15px'
           },
           size: 'small'
-      }
-    }),
-
-    geoLocation = new ymaps.control.GeolocationControl({
-      options: {
-        position: {
-          top: '350px',
-          right: '15px'
         }
-      }
-    }),
-
-    myMap = new ymaps.Map("map", {
+      }),
+  
+      geoLocation = new ymaps.control.GeolocationControl({
+        options: {
+          position: {
+            top: '350px',
+            right: '15px'
+          }
+        }
+      })
+    }
+  
+    var myMap = new ymaps.Map("map", {
       center: coordiantes,
 
       zoom: 14.2,
@@ -319,7 +359,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       iconImageSize: [20, 20],
       iconImageOffset: [-10, -15]
     });
-
+    
     myMap.geoObjects.add(myPlacemark);
     myMap.controls.remove('searchControl');
     myMap.controls.remove('rulerControl');
@@ -327,6 +367,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     myMap.controls.remove('typeSelector');
     myMap.controls.remove('fullscreenControl');
   }
+
 
   // inputmask
   var selector = document.querySelector("input[type='tel']");
