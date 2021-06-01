@@ -42,7 +42,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     $( "#accordion" ).accordion({
       heightStyle: 'content',
-      header: '.catalog-content__list-item',
+      // header: '.catalog-content__list-item',
+      header: '.catalog-content__item-top',
       collapsible: true,
       icons: false,
       active: false
@@ -86,7 +87,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     event.preventDefault();
     burgerMenu.classList.add('show');
   })
-  document.querySelector('.burger-btn--close').addEventListener('click', function(event) {
+  document.querySelector('#burgerBtnClose').addEventListener('click', function(event) {
     event.preventDefault();
     burgerMenu.classList.remove('show');
   })
@@ -117,6 +118,37 @@ document.addEventListener("DOMContentLoaded", (event) => {
       behavior: 'smooth',
     })
   }
+
+  // Modal-popup
+  let modalPopup = document.querySelector('.modal-popup');
+
+  document.querySelectorAll('.swiper-slide-modal').forEach(function(gallerySlide) {
+    gallerySlide.addEventListener('click', function(el) {
+      let modalPath = this.dataset.modalPath;
+      if (modalPath != null || modalPath != undefined) {
+        modalTarget = document.querySelector(`[data-modal-target="${modalPath}"]`);
+        swiperImg = gallerySlide.querySelector('.swiper-img');
+        // swiperModalImg = modalTarget.querySelector('.img');
+        swiperModalImg = modalPopup.querySelector('.modal-popup__img');
+
+        swiperModalImg.src = swiperImg.src;
+        modalPopup.classList.toggle('open');
+        modalTarget.classList.toggle('active');
+      }
+    })
+  })
+
+  document.querySelectorAll('.modal-popup__btn').forEach(function(modalBtn) {
+    modalBtn.addEventListener('click', function(event) {
+      modalPopup.classList.toggle('open');
+      modalTarget.classList.toggle('active');    
+    })
+  })
+
+  // document.querySelector('#modalBtnClose').addEventListener('click', function(event) {
+  //   modalPopup.classList.toggle('open');
+  //   modalTarget.classList.toggle('active');
+  // })
 
   //TABS
   document.querySelectorAll('.accordion-content__list-button').forEach(function(tabsBtn){
