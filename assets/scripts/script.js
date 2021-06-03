@@ -431,7 +431,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
       tel: {
         required: 'Укажите ваш телефон'
       }
-    }
+    },
+    submitHandler: function (form, values, ajax) {
+      ajax({
+        url: '../../mail.php',
+        method: 'POST',
+        data: values,
+        async: true,
+        callback: function(response)  {
+          console.log(response)
+        }
+      });
+    },
   })
 
 

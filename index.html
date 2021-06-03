@@ -3794,15 +3794,15 @@
               <h3 class="contacts-left__title article-description__title">Шоурум №4</h3>
               <address class="address">Леонтьевский переулок, дом 5, строение 1</address>
             </div>
-            <form action="#" class="form">
+            <form action="./mail.php" class="form" method="POST">
               <h3 class="form__title article-description__title">Заказать обратный звонок</h3>
               <div class="form__item">
-                <input class="form__input" type="text" placeholder="Имя*"  data-validate-field="name">
+                <input class="form__input" type="text" placeholder="Имя*"  data-validate-field="name" name="name">
               </div>
               <div class="form__item">
-                <input class="form__input" type="tel" placeholder="Телефон*"  data-validate-field="tel">
+                <input class="form__input" type="tel" placeholder="Телефон*"  data-validate-field="tel" name="phone">
               </div>
-              <button class="form__button button button--medium button--transparent clickable">Заказать</button>
+              <button type="submit" class="form__button button button--medium button--transparent clickable">Заказать</button>
             </form>
             <h3 class="social__title article-description__title">Связаться в один клик</h3>
             <ul class="social">
